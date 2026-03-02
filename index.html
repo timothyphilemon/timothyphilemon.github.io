@@ -146,7 +146,7 @@ body {
 /* iOS icon grid — 4 columns */
 .m-icons {
   display:grid; grid-template-columns:repeat(4,1fr);
-  gap:20px 12px; padding:0 4px;
+  gap:20px 12px; padding:0 4px; margin-top:32px;
 }
 .m-icon { display:flex; flex-direction:column; align-items:center; gap:5px; cursor:pointer; -webkit-tap-highlight-color:transparent; }
 .m-icon-img {
@@ -583,16 +583,19 @@ var drag2=false,off2X=0,off2Y=0;
 function startDrag2(e){ if(!win2)return; drag2=true; off2X=e.clientX-win2.offsetLeft; off2Y=e.clientY-win2.offsetTop; win2.style.transform='none'; }
 var dragT=false,offTX=0,offTY=0;
 function startDragTerm(e){ if(!termWin)return; dragT=true; offTX=e.clientX-termWin.offsetLeft; offTY=e.clientY-termWin.offsetTop; }
+var dragM=false,offMX=0,offMY=0,mainWin=null;
+function startDragMain(e){ if(!mainWin)return; dragM=true; offMX=e.clientX-mainWin.offsetLeft; offMY=e.clientY-mainWin.offsetTop; }
 document.addEventListener('mousemove',function(e){
   if(drag2&&win2){win2.style.left=(e.clientX-off2X)+'px';win2.style.top=(e.clientY-off2Y)+'px';}
   if(dragT&&termWin){termWin.style.left=(e.clientX-offTX)+'px';termWin.style.top=(e.clientY-offTY)+'px';}
+  if(dragM&&mainWin){mainWin.style.left=(e.clientX-offMX)+'px';mainWin.style.top=(e.clientY-offMY)+'px';}
 });
-document.addEventListener('mouseup',function(){drag2=false;dragT=false;});
+document.addEventListener('mouseup',function(){drag2=false;dragT=false;dragM=false;});
 
 function buildMain(){
   var desktop=document.getElementById('desktop');
   var w=document.createElement('div'); w.className='win';
-  w.style.cssText='top:320px;left:320px;width:570px;z-index:10;position:absolute';
+  w.style.cssText='top:280px;left:280px;width:640px;z-index:10;position:absolute';
   var mainSidebar='<div class="sidebar">'
     +'<div class="sidebar-section"><div class="sidebar-label">Pages</div>'
     +'<div class="sidebar-item home-active"><svg class="item-icon" viewBox="0 0 16 16" fill="none"><path d="M8 2L2 7v7h4v-4h4v4h4V7L8 2z" stroke="#666" stroke-width="1.2" fill="none" stroke-linejoin="round"/></svg> Home</div></div>'
@@ -614,10 +617,10 @@ function buildMain(){
     +'<div class="folder-item" onclick="showInSecond(\'press\')" style="transform:translate(-2px,8px)">'+folderSVG(60)+'<span class="folder-item-label">Press &amp; Media</span></div>'
     +'<div class="folder-item" onclick="showInSecond(\'github\')" style="transform:translate(4px,-4px)">'+githubBig+'<span class="folder-item-label">GitHub</span></div>'
     +'</div></div>';
-  w.innerHTML='<div class="titlebar"><div class="dots"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div><div class="titlebar-name">timothy-philemon &mdash; projects</div><div style="width:42px"></div></div>'
-    +'<div style="display:flex;height:318px">'+mainSidebar+homeContent+'</div>'
+  w.innerHTML='<div class="titlebar" style="cursor:move" onmousedown="startDragMain(event)"><div class="dots"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div><div class="titlebar-name">timothy-philemon &mdash; projects</div><div style="width:42px"></div></div>'
+    +'<div style="display:flex;height:360px">'+mainSidebar+homeContent+'</div>'
     +'<div class="statusbar">5 items &middot; Creative Technologist</div>';
-  desktop.appendChild(w);
+  desktop.appendChild(w); mainWin=w;
 }
 buildMain();
 
