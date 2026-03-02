@@ -7,19 +7,14 @@
 <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/timothyphilemon/Assets/02268c1315f53dec6c25782f5fcb8e4f83fa3253/Favicon.png">
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
-
-/* ── SHARED ── */
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
   background: url('https://raw.githubusercontent.com/timothyphilemon/Assets/08facfaf69d11adc91b00b69f17436f3597c66f7/10-6--thumb.png') center/cover no-repeat fixed;
 }
 
-/* ══════════════════════════════════════════
-   DESKTOP
-══════════════════════════════════════════ */
+/* ══ DESKTOP ══ */
 #desktop-view { display:block; }
 #mobile-view  { display:none; }
-
 #desktop { position:fixed; inset:0; }
 .win {
   position:absolute; background:#f5f5f5; border-radius:10px;
@@ -92,6 +87,12 @@ body {
 .media-grid { display:grid; gap:8px; margin-top:14px; }
 .media-grid.cols3 { grid-template-columns:repeat(3,1fr); }
 .media-grid.cols2 { grid-template-columns:repeat(2,1fr); }
+.press-link-card { text-decoration:none; background:#f8f8f8; border:1px solid #e5e5e5; border-radius:8px; padding:12px 14px; display:flex; align-items:center; gap:12px; margin-top:10px; }
+.press-link-card:first-child { margin-top:0; }
+.press-link-card img { width:32px; height:32px; object-fit:contain; border-radius:5px; }
+.press-link-card .plc-title { font-size:13px; font-weight:600; color:#111; }
+.press-link-card .plc-sub { font-size:12px; color:#888; margin-top:1px; }
+.press-link-card .plc-arrow { margin-left:auto; color:#2a6fe8; font-size:13px; font-weight:500; }
 
 /* Desktop Quick Look */
 #quicklook { display:none; position:fixed; inset:0; z-index:999; align-items:flex-start; justify-content:flex-end; padding:40px 40px 0 0; }
@@ -105,32 +106,17 @@ body {
 #ql-img { max-width:72vw; max-height:70vh; border-radius:4px; display:block; }
 #ql-desc { color:#666; font-size:12px; line-height:1.5; text-align:center; max-width:60vw; padding-bottom:4px; }
 
-/* ══════════════════════════════════════════
-   MOBILE
-══════════════════════════════════════════ */
+/* ══ MOBILE ══ */
 @media (max-width: 768px) {
   #desktop-view { display:none; }
   #mobile-view  { display:block; }
   body { overflow:hidden; background:#000; }
 }
-
 #mobile-view {
   position:fixed; inset:0;
   background: url('https://raw.githubusercontent.com/timothyphilemon/Assets/901519a141b8748515485be0b5d2fc192fb6468c/iOS-stock-8-for-iPhone-X.png') center/cover no-repeat;
   overflow:hidden; font-family:-apple-system,'SF Pro Display','Helvetica Neue',sans-serif;
 }
-
-/* iOS status bar */
-.m-statusbar {
-  position:absolute; top:0; left:0; right:0; height:44px;
-  display:flex; align-items:center; justify-content:space-between;
-  padding:12px 20px 0; z-index:50;
-}
-.m-status-time { color:white; font-size:15px; font-weight:600; letter-spacing:-.2px; }
-.m-status-icons { display:flex; align-items:center; gap:6px; }
-.m-status-icons svg { opacity:.9; }
-
-/* Home screen */
 #m-home {
   position:absolute; inset:0;
   display:flex; flex-direction:column;
@@ -138,115 +124,63 @@ body {
   transition:transform .4s cubic-bezier(.4,0,.2,1), opacity .4s;
 }
 #m-home.hidden { transform:scale(0.95); opacity:0; pointer-events:none; }
-
-/* Name block */
-.m-name-block { margin-bottom:36px; }
 .m-name { font-size:34px; font-weight:700; color:white; letter-spacing:-.5px; }
 .m-role { font-size:14px; color:rgba(255,255,255,0.55); margin-top:4px; font-weight:400; letter-spacing:.1px; }
-
-/* iOS icon grid — 4 columns */
 .m-icons {
   display:grid; grid-template-columns:repeat(4,1fr);
   gap:20px 12px; padding:0 4px; margin-top:32px;
 }
 .m-icon { display:flex; flex-direction:column; align-items:center; gap:5px; cursor:pointer; -webkit-tap-highlight-color:transparent; }
 .m-icon-img {
-  width:60px; height:60px;
-  border-radius:13px;
+  width:60px; height:60px; border-radius:13px;
   display:flex; align-items:center; justify-content:center;
   box-shadow:0 2px 12px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.15);
-  transition:transform .12s, opacity .12s;
-  position:relative; overflow:hidden;
+  transition:transform .12s, opacity .12s; position:relative; overflow:hidden;
 }
 .m-icon-img::after { content:''; position:absolute; inset:0; background:linear-gradient(160deg,rgba(255,255,255,0.18) 0%,transparent 60%); pointer-events:none; }
 .m-icon-img:active { transform:scale(0.88); opacity:.85; }
 .m-icon-label { font-size:10px; color:white; font-weight:400; text-align:center; letter-spacing:.1px; text-shadow:0 1px 3px rgba(0,0,0,0.8); }
-
-/* iOS dock */
-.m-dock {
-  position:absolute; bottom:28px; left:20px; right:20px;
-  background:rgba(255,255,255,0.12);
-  backdrop-filter:blur(30px); -webkit-backdrop-filter:blur(30px);
-  border-radius:24px; border:1px solid rgba(255,255,255,0.18);
-  padding:12px 20px;
-  display:flex; justify-content:space-around; align-items:center;
-}
-
-/* Full-screen app panels */
 .m-panel {
   position:absolute; inset:0; background:#f2f2f7;
-  transform:translateY(100%);
-  transition:transform .4s cubic-bezier(.4,0,.2,1);
-  pointer-events:none; overflow-y:auto;
-  display:flex; flex-direction:column;
+  transform:translateY(100%); transition:transform .4s cubic-bezier(.4,0,.2,1);
+  pointer-events:none; overflow-y:auto; display:flex; flex-direction:column;
 }
 .m-panel.open { transform:translateY(0); pointer-events:all; }
-
-/* iOS nav bar */
 .m-panel-nav {
-  background:rgba(242,242,247,0.92);
-  backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
-  padding:52px 16px 12px;
-  display:flex; align-items:center;
-  border-bottom:1px solid rgba(0,0,0,0.1);
-  position:sticky; top:0; z-index:10;
+  background:rgba(242,242,247,0.92); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+  padding:52px 16px 12px; display:flex; align-items:center;
+  border-bottom:1px solid rgba(0,0,0,0.1); position:sticky; top:0; z-index:10;
 }
-.m-back {
-  display:flex; align-items:center; gap:3px;
-  color:#0a84ff; font-size:16px; font-weight:400; cursor:pointer;
-  padding:4px 0;
-}
+.m-back { display:flex; align-items:center; gap:3px; color:#0a84ff; font-size:16px; font-weight:400; cursor:pointer; padding:4px 0; }
 .m-panel-title { font-size:17px; font-weight:600; color:#000; position:absolute; left:50%; transform:translateX(-50%); }
 .m-panel-body { padding:20px 16px 50px; flex:1; }
-
-/* iOS grouped cards */
 .m-card { background:white; border-radius:12px; padding:14px 16px; margin-bottom:8px; box-shadow:0 1px 3px rgba(0,0,0,0.07); }
 .m-card-title { font-size:12px; font-weight:600; color:rgba(0,0,0,0.45); text-transform:uppercase; letter-spacing:.6px; margin-bottom:8px; }
 .m-card-body { font-size:15px; color:#333; line-height:1.55; }
 .m-link { color:#0a84ff; font-size:15px; font-weight:400; text-decoration:none; }
-
-/* iOS list rows for contact */
-.m-list { background:white; border-radius:12px; overflow:hidden; margin-bottom:8px; box-shadow:0 1px 3px rgba(0,0,0,0.07); }
-.m-list-row { display:flex; align-items:center; justify-content:space-between; padding:13px 16px; border-bottom:1px solid rgba(0,0,0,0.07); text-decoration:none; }
-.m-list-row:last-child { border-bottom:none; }
-.m-list-label { font-size:15px; color:#000; font-weight:400; }
-.m-list-val { font-size:14px; color:#0a84ff; flex:1; text-align:right; margin-right:6px; }
-.m-list-chevron { color:rgba(0,0,0,0.25); font-size:16px; }
-
-/* Contact icon circles */
-.m-contact-icon { width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-right:12px; }
-
-/* iOS-style tags */
-.m-tag-row { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:14px; }
-.m-ios-tag { font-size:11px; font-weight:600; padding:4px 10px; border-radius:20px; }
-.m-ios-tag.blue  { background:#e8f9ff; color:#0090c8; border:1px solid #b8e8fa; }
-.m-ios-tag.green { background:#e6f9ea; color:#1e8a32; border:1px solid #b6e8bf; }
-.m-ios-tag.orange{ background:#fff8e6; color:#a07000; border:1px solid #f0d98a; }
-.m-ios-tag.purple{ background:#fef0ff; color:#9a00c8; border:1px solid #e8b8fa; }
-
-/* Media grids */
 .m-media-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:3px; margin-top:2px; border-radius:12px; overflow:hidden; }
 .m-media-grid.cols3 { grid-template-columns:repeat(3,1fr); }
 .m-thumb { aspect-ratio:1/1; overflow:hidden; background:#1c1c1e; cursor:pointer; position:relative; }
 .m-thumb img { width:100%; height:100%; object-fit:cover; display:block; }
 .m-thumb .gif-badge { position:absolute; bottom:5px; right:5px; background:rgba(0,0,0,0.65); color:white; font-size:9px; font-weight:700; padding:2px 5px; border-radius:4px; letter-spacing:.3px; }
-
-/* Full screen preview */
+.m-press-link { text-decoration:none; background:white; border-radius:12px; padding:14px 16px; display:flex; align-items:center; gap:12px; box-shadow:0 1px 3px rgba(0,0,0,0.07); margin-top:10px; }
+.m-press-link img { width:36px; height:36px; object-fit:contain; border-radius:6px; }
+.m-press-link .plc-title { font-size:13px; font-weight:600; color:#111; }
+.m-press-link .plc-sub { font-size:12px; color:#888; margin-top:2px; }
+.m-press-link .plc-arrow { margin-left:auto; color:#aaa; font-size:16px; }
 #m-preview {
   position:fixed; inset:0; background:#000;
-  z-index:999; display:none; flex-direction:column;
-  align-items:center; justify-content:center;
+  z-index:999; display:none; flex-direction:column; align-items:center; justify-content:center;
 }
 #m-preview.open { display:flex; }
 .m-preview-bar { position:absolute; top:0; left:0; right:0; height:80px; display:flex; align-items:flex-end; justify-content:flex-end; padding:0 20px 12px; }
-.m-preview-close { color:rgba(255,255,255,0.75); font-size:15px; font-weight:500; cursor:pointer; background:rgba(255,255,255,0.12); padding:6px 14px; border-radius:20px; }
 #m-preview-img { max-width:100vw; max-height:78vh; object-fit:contain; }
 #m-preview-desc { color:rgba(255,255,255,0.55); font-size:13px; text-align:center; margin-top:16px; max-width:84vw; line-height:1.5; padding:0 8px; }
 </style>
 </head>
 <body>
 
-<!-- ══ DESKTOP QUICK LOOK ══ -->
+<!-- DESKTOP QUICK LOOK -->
 <div id="quicklook" onclick="closeQL(event)">
   <div id="ql-window">
     <div id="ql-bar">
@@ -261,15 +195,13 @@ body {
   </div>
 </div>
 
-<!-- ══ DESKTOP VIEW ══ -->
+<!-- DESKTOP VIEW -->
 <div id="desktop-view">
   <div id="desktop"></div>
 </div>
 
-<!-- ══ MOBILE VIEW ══ -->
+<!-- MOBILE VIEW -->
 <div id="mobile-view">
-
-  <!-- Home screen -->
   <div id="m-home">
     <div class="m-header">
       <div class="m-name">Timothy Philemon</div>
@@ -327,10 +259,10 @@ body {
         <div class="m-card-body">Free movie screenings happen often, but RSVP links are scattered and buried across the web. I built custom Python scraper agents to aggregate public listings in real time so users can receive email or text alerts with free passes before they sell out. Now serving thousands across 25+ U.S. cities — backed by LvlUp Ventures.</div>
       </div>
       <div style="margin:12px 0;border-radius:10px;overflow:hidden;border:1px solid #e0e0e0">
-        <img src="https://raw.githubusercontent.com/timothyphilemon/Assets/a9f8c3fd246a2591732516100473e45e1823c2fa/Screenshot%202026-03-02%20at%209.12.11%20AM.png" style="width:100%;display:block;"/>
+        <img src="https://raw.githubusercontent.com/timothyphilemon/Assets/eb37ec94c6381116c5f4b0970275b62acdac92ac/Screenshot%202026-03-01%20at%207.22.02%20PM.png" style="width:100%;display:block;"/>
       </div>
       <div style="margin:12px 0;border-radius:10px;overflow:hidden;border:1px solid #e0e0e0">
-        <img src="https://raw.githubusercontent.com/timothyphilemon/Assets/eb37ec94c6381116c5f4b0970275b62acdac92ac/Screenshot%202026-03-01%20at%207.22.02%20PM.png" style="width:100%;display:block;"/>
+        <img src="https://raw.githubusercontent.com/timothyphilemon/Assets/a9f8c3fd246a2591732516100473e45e1823c2fa/Screenshot%202026-03-02%20at%209.12.11%20AM.png" style="width:100%;display:block;"/>
       </div>
       <a href="https://cinefind.app" target="_blank" class="m-link">↗ cinefind.app</a>
     </div>
@@ -372,6 +304,18 @@ body {
         <div class="m-card-body">Press credentials to major entertainment industry events. Active partnerships with Paramount and Warner Bros. through Cinefind's screening network.</div>
       </div>
       <div class="m-media-grid cols3" id="m-press-grid"></div>
+      <div style="margin-top:24px;">
+        <a href="https://www.trendhunter.com/trends/cinefind" target="_blank" class="m-press-link">
+          <img src="https://raw.githubusercontent.com/timothyphilemon/Assets/32a8e302b21bb1a530f7a686ea70b4b2b3a0cc39/3613ffd2347354025874eb745af80aa7.jpg"/>
+          <div><div class="plc-title">TrendHunter</div><div class="plc-sub">Cinefind Featured Article</div></div>
+          <div class="plc-arrow">↗</div>
+        </a>
+        <a href="https://www.producthunt.com/products/cinefind" target="_blank" class="m-press-link">
+          <img src="https://raw.githubusercontent.com/timothyphilemon/Assets/60ac23caf33d35e30f95e914250524d4c277a50d/ph-logo-1.avif"/>
+          <div><div class="plc-title">Product Hunt</div><div class="plc-sub">Cinefind Featured Article</div></div>
+          <div class="plc-arrow">↗</div>
+        </a>
+      </div>
     </div>
   </div>
 
@@ -424,13 +368,10 @@ body {
 </div>
 
 <script>
-// ══════════════════════════════
-// SHARED DATA
-// ══════════════════════════════
 var pressImages = [
   { src:'https://raw.githubusercontent.com/timothyphilemon/Assets/0923f1e521828f14e28fe9a2c1eaa12c93490a3b/Screenshot%202026-03-01%20at%204.14.02%20PM.png', desc:'Cinefind x 2025 IDA Documentary Awards.' },
   { src:'https://raw.githubusercontent.com/timothyphilemon/Assets/c13a4e90608dc36fa640385436a41d93ca9c9dac/IMG_1133.JPG', desc:"FYC Screening — Everybody's in LA." },
-  { src:'https://raw.githubusercontent.com/timothyphilemon/Assets/0923f1e521828f14e28fe9a2c1eaa12c93490a3b/IMG_2218.jpg', desc:'Press interview at the 2025 Afrikicks Gala. Interview can be found on Instagram @Cinefindapp.' },
+  { src:'https://raw.githubusercontent.com/timothyphilemon/Assets/0923f1e521828f14e28fe9a2c1eaa12c93490a3b/IMG_2218.jpg', desc:'Press interview at the 2025 Afrikicks Gala.' },
   { src:'https://raw.githubusercontent.com/timothyphilemon/Assets/0923f1e521828f14e28fe9a2c1eaa12c93490a3b/IMG_2221.JPG', desc:'Weapons world premiere in partnership with Warner Bros distribution.' },
   { src:'https://raw.githubusercontent.com/timothyphilemon/Assets/0923f1e521828f14e28fe9a2c1eaa12c93490a3b/IMG_2223.JPG', desc:'Weapons world premiere 2025.' },
   { src:'https://raw.githubusercontent.com/timothyphilemon/Assets/c13a4e90608dc36fa640385436a41d93ca9c9dac/Screenshot%202026-03-01%20at%206.04.43%20PM.png', desc:'Google I/O 2024.' }
@@ -440,12 +381,22 @@ var funMedia = [
   { type:'image', src:'https://raw.githubusercontent.com/timothyphilemon/Assets/ffa699dd28baedd356cb091ca40441d3ecf6eb7b/IMG_2906.JPG', desc:'Portrait illustration 2025.' },
   { type:'gif', src:'https://raw.githubusercontent.com/timothyphilemon/Assets/ca7e077c48ba646697276d3e6530442b928c98f5/ezgif-82fd9205dc965d3d.gif', desc:'AI Anime using Nano Banana & VEO3 [Full clip on Youtube].' },
   { type:'image', src:'https://raw.githubusercontent.com/timothyphilemon/Assets/ffa699dd28baedd356cb091ca40441d3ecf6eb7b/IMG_0026.jpg', desc:'Procreate illustration 2022.' },
-  { type:'gif', src:'https://raw.githubusercontent.com/timothyphilemon/Assets/3c8fe099db4151b2e8efc552c38d22ce66068905/ezgif-7a96cb54b9f3e6e6.gif', desc:'Frame by frame animation via Adobe Flash. Full video: https://youtu.be/E_4VPpHWzeM?si=XTcnuApDi8llURhz' }
+  { type:'gif', src:'https://raw.githubusercontent.com/timothyphilemon/Assets/3c8fe099db4151b2e8efc552c38d22ce66068905/ezgif-7a96cb54b9f3e6e6.gif', desc:'Frame by frame animation via Adobe Flash.' }
 ];
 
-// ══════════════════════════════
-// DESKTOP
-// ══════════════════════════════
+var pressLinksHTML =
+  '<div style="margin-top:24px;">'
+  +'<a href="https://www.trendhunter.com/trends/cinefind" target="_blank" class="press-link-card">'
+  +'<img src="https://raw.githubusercontent.com/timothyphilemon/Assets/32a8e302b21bb1a530f7a686ea70b4b2b3a0cc39/3613ffd2347354025874eb745af80aa7.jpg"/>'
+  +'<div><div class="plc-title">TrendHunter</div><div class="plc-sub">Cinefind Featured Article</div></div>'
+  +'<div class="plc-arrow">↗</div></a>'
+  +'<a href="https://www.producthunt.com/products/cinefind" target="_blank" class="press-link-card">'
+  +'<img src="https://raw.githubusercontent.com/timothyphilemon/Assets/60ac23caf33d35e30f95e914250524d4c277a50d/ph-logo-1.avif"/>'
+  +'<div><div class="plc-title">Product Hunt</div><div class="plc-sub">Cinefind Featured Article</div></div>'
+  +'<div class="plc-arrow">↗</div></a>'
+  +'</div>';
+
+// ══ DESKTOP ══
 function openQL(src, name, desc) {
   document.getElementById('ql-img').src = src;
   document.getElementById('ql-filename').textContent = name || 'preview';
@@ -458,14 +409,12 @@ function closeQL(e) { if (e.target===document.getElementById('quicklook')) close
 document.addEventListener('keydown', function(e) { if (e.key==='Escape') { closeQLBtn(); mClosePreview(); } });
 
 function mediaThumb(type, src, name, desc) {
-  if (!src) return '<div class="finder-thumb" style="cursor:default"><span style="font-size:10px;color:#bbb">no image</span></div>';
+  if (!src) return '<div class="finder-thumb" style="cursor:default"></div>';
   var n = name || src.split('/').pop().split('?')[0];
   var safeDesc = (desc||'').replace(/'/g,"\\'");
   var inner = type==='gif' ? '<img src="'+src+'" alt=""/><div class="gif-badge">GIF</div>'
-             : type==='video' ? '<video autoplay loop muted playsinline src="'+src+'"></video>'
              : '<img src="'+src+'" alt=""/>';
-  var click = type!=='video' ? 'onclick="openQL(\''+src+'\',\''+n+'\',\''+safeDesc+'\')"' : '';
-  return '<div class="finder-thumb" '+click+'>'+inner+'</div>';
+  return '<div class="finder-thumb" onclick="openQL(\''+src+'\',\''+n+'\',\''+safeDesc+'\')">'+inner+'</div>';
 }
 
 function folderSVG(size) {
@@ -491,6 +440,7 @@ var panelData = {
     tags:'<span class="tag green">Live Product</span><span class="tag yellow">Venture Backed</span><span class="tag">Python</span><span class="tag">APIs</span><span class="tag">Automation</span>',
     body:'<div class="card"><div class="card-title">About</div><div class="card-body">Free movie screenings happen often, but RSVP links are scattered and buried across the web. I built custom Python scraper agents to aggregate public listings in real time so users can receive email or text alerts with free passes before they sell out. Now serving thousands across 25+ U.S. cities, the platform features a clean, intuitive UI, automated notification systems, and a three-sided marketplace — backed by LvlUp Ventures.</div></div>'
       +'<div style="margin-top:12px;border-radius:8px;overflow:hidden;border:1px solid #e5e5e5;"><img src="https://raw.githubusercontent.com/timothyphilemon/Assets/eb37ec94c6381116c5f4b0970275b62acdac92ac/Screenshot%202026-03-01%20at%207.22.02%20PM.png" style="width:100%;display:block;"/></div>'
+      +'<div style="margin-top:10px;border-radius:8px;overflow:hidden;border:1px solid #e5e5e5;"><img src="https://raw.githubusercontent.com/timothyphilemon/Assets/a9f8c3fd246a2591732516100473e45e1823c2fa/Screenshot%202026-03-02%20at%209.12.11%20AM.png" style="width:100%;display:block;"/></div>'
       +'<div style="margin-top:14px"><a href="https://cinefind.app" target="_blank" class="link">&#8599; cinefind.app</a></div>'
   },
   fun: {
@@ -503,6 +453,7 @@ var panelData = {
     tags:'<span class="tag yellow">IDA Awards</span><span class="tag yellow">NAACP Image Awards</span><span class="tag">Paramount</span><span class="tag">Warner Bros.</span>',
     body:'<div class="card"><div class="card-title">Industry Access</div><div class="card-body">Press credentials to major entertainment industry events including the IDA Documentary Awards and NAACP Image Awards. Active partnerships with Paramount and Warner Bros. through Cinefind\'s screening network.</div></div>'
       +'<div class="media-grid cols3">'+pressImages.map(function(m){return mediaThumb('image',m.src,null,m.desc);}).join('')+'</div>'
+      + pressLinksHTML
   },
   contact: {
     title:'Contact', subtitle:'Let\'s build something', tags:'',
@@ -581,7 +532,7 @@ function openTerminal(){
 function closeTerm(){ if(termWin){termWin.remove();termWin=null;} }
 
 var drag2=false,off2X=0,off2Y=0;
-function startDrag2(e){ if(!win2)return; drag2=true; off2X=e.clientX-win2.offsetLeft; off2Y=e.clientY-win2.offsetTop; win2.style.transform='none'; }
+function startDrag2(e){ if(!win2)return; var r=win2.getBoundingClientRect(); win2.style.transform='none'; win2.style.left=r.left+'px'; win2.style.top=r.top+'px'; drag2=true; off2X=e.clientX-r.left; off2Y=e.clientY-r.top; }
 var dragT=false,offTX=0,offTY=0;
 function startDragTerm(e){ if(!termWin)return; dragT=true; offTX=e.clientX-termWin.offsetLeft; offTY=e.clientY-termWin.offsetTop; }
 var dragM=false,offMX=0,offMY=0,mainWin=null;
@@ -625,9 +576,7 @@ function buildMain(){
 }
 buildMain();
 
-// ══════════════════════════════
-// MOBILE
-// ══════════════════════════════
+// ══ MOBILE ══
 function mOpenPanel(id) {
   document.getElementById('m-home').classList.add('hidden');
   document.getElementById(id).classList.add('open');
@@ -644,23 +593,20 @@ function mOpenPreview(src, desc) {
 }
 function mClosePreview() { document.getElementById('m-preview').classList.remove('open'); }
 
-// Build mobile media grids
-function buildMobileGrid(containerId, items, type) {
+function buildMobileGrid(containerId, items) {
   var el = document.getElementById(containerId);
   if (!el) return;
   el.innerHTML = items.map(function(m) {
-    var src = type==='press' ? m.src : m.src;
     var desc = (m.desc||'').replace(/'/g,"\\'");
-    var isGif = m.type==='gif' || type==='press' ? false : m.type==='gif';
-    if (type !== 'press') isGif = m.type==='gif';
-    return '<div class="m-thumb" onclick="mOpenPreview(\''+src+'\',\''+desc+'\')">'
-      +'<img src="'+src+'" alt=""/>'
+    var isGif = m.type==='gif';
+    return '<div class="m-thumb" onclick="mOpenPreview(\''+m.src+'\',\''+desc+'\')">'
+      +'<img src="'+m.src+'" alt=""/>'
       +(isGif ? '<div class="gif-badge">GIF</div>' : '')
       +'</div>';
   }).join('');
 }
-buildMobileGrid('m-press-grid', pressImages, 'press');
-buildMobileGrid('m-fun-grid', funMedia, 'fun');
+buildMobileGrid('m-press-grid', pressImages);
+buildMobileGrid('m-fun-grid', funMedia);
 </script>
 </body>
 </html>
