@@ -763,7 +763,7 @@ function openTerminal(){
 function closeTerm(){ if(termWin){termWin.remove();termWin=null;} }
 
 var drag2=false,off2X=0,off2Y=0;
-function startDrag2(e){ if(!win2)return; if(e.target.classList.contains('dot'))return; drag2=true; off2X=e.clientX-win2.offsetLeft; off2Y=e.clientY-win2.offsetTop; win2.style.transform='none'; }
+function startDrag2(e){ if(!win2)return; if(e.target.classList.contains('dot'))return; drag2=true; var r=win2.getBoundingClientRect(); win2.style.transform='none'; win2.style.left=r.left+'px'; win2.style.top=r.top+'px'; off2X=e.clientX-r.left; off2Y=e.clientY-r.top; }
 var dragT=false,offTX=0,offTY=0;
 function startDragTerm(e){ if(!termWin)return; dragT=true; offTX=e.clientX-termWin.offsetLeft; offTY=e.clientY-termWin.offsetTop; }
 document.addEventListener('mousemove',function(e){
