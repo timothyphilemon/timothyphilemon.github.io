@@ -603,6 +603,8 @@ function createSecondWindow(initialId) {
     +'<div class="statusbar">Creative Technologist</div>';
   desktop.appendChild(w); win2=w;
 }
+var mainWin = null;
+function closeMainWin(e){ e.stopPropagation(); if(mainWin){ mainWin.remove(); mainWin=null; } }
 function closeWin2(){ if(win2){win2.remove();win2=null;} }
 
 var termWin=null;
@@ -637,7 +639,16 @@ function openTerminal(){
 function closeTerm(){ if(termWin){termWin.remove();termWin=null;} }
 
 var drag2=false,off2X=0,off2Y=0;
-function startDrag2(e){ if(!win2)return; drag2=true; off2X=e.clientX-win2.offsetLeft; off2Y=e.clientY-win2.offsetTop; win2.style.transform='none'; }
+function startDrag2(e){
+  if(!win2)return;
+  drag2=true;
+  var rect=win2.getBoundingClientRect();
+  win2.style.transform='none';
+  win2.style.left=rect.left+'px';
+  win2.style.top=rect.top+'px';
+  off2X=e.clientX-rect.left;
+  off2Y=e.clientY-rect.top;
+}
 var dragT=false,offTX=0,offTY=0;
 function startDragTerm(e){ if(!termWin)return; dragT=true; offTX=e.clientX-termWin.offsetLeft; offTY=e.clientY-termWin.offsetTop; }
 document.addEventListener('mousemove',function(e){
@@ -676,7 +687,7 @@ function buildMain(){
   w.innerHTML='<div class="titlebar"><div class="dots"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div><div class="titlebar-name">timothy-philemon &mdash; projects</div><div style="width:42px"></div></div>'
     +'<div style="display:flex;height:360px">'+mainSidebar+homeContent+'</div>'
     +'<div class="statusbar">5 items &middot; Creative Technologist</div>';
-  desktop.appendChild(w);
+  desktop.appendChild(w); mainWin = w;
 }
 buildMain();
 
