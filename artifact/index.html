@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Room Test</title>
+<title>Timothy Philemon</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 body{
@@ -99,9 +99,19 @@ body{
   padding:6px 16px;border-radius:20px;z-index:999;pointer-events:none;display:none;white-space:nowrap;
 }
 
-/* ── MOBILE ONLY ── */
-#mobile-text{display:none;}
-#btn-bar{display:none;}
+/* ── phone site overlay (mobile) ── */
+#phone-overlay{
+  position:fixed;inset:0;z-index:400;display:none;flex-direction:column;background:#000;
+}
+#phone-overlay iframe{flex:1;width:100%;border:none;}
+#phone-overlay .back-btn{
+  position:absolute;top:env(safe-area-inset-top,16px);left:16px;
+  opacity:1;pointer-events:all;
+  padding:12px 22px;font-size:15px;min-height:44px;
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;
+}
+
+  #confirm-btn{display:none;}
 
 @media (pointer:coarse){
   #room-bg{transform:scale(1) translateY(0);}
@@ -139,7 +149,26 @@ body{
     -webkit-tap-highlight-color:transparent;touch-action:manipulation;
     display:flex;align-items:center;justify-content:center;
   }
-  .item-btn:active{background:#ddd;transform:scale(0.97);}
+  @keyframes rainbow-border{0%{border-color:#ff3333}16%{border-color:#ff9900}33%{border-color:#ddcc00}50%{border-color:#22bb44}66%{border-color:#2277ff}83%{border-color:#aa22ff}100%{border-color:#ff3333}}
+  .item-btn.selected{
+    background:#f0f0f0;color:#111;
+    border:3px solid #ff3333;
+    animation:rainbow-border 2s linear infinite;
+  }
+  .item-btn:active{transform:scale(0.97);}
+
+  #confirm-btn{
+    display:none;
+    position:fixed;bottom:calc(env(safe-area-inset-bottom,0px) + 14px);
+    left:50%;transform:translateX(-50%);
+    background:#111;color:#fff;border:none;
+    padding:16px 40px;border-radius:40px;
+    font-size:16px;font-weight:700;letter-spacing:0.02em;
+    z-index:100;cursor:pointer;
+    box-shadow:0 4px 20px rgba(0,0,0,0.25);
+    -webkit-tap-highlight-color:transparent;touch-action:manipulation;
+  }
+  #confirm-btn.visible{display:block;}
 
   .endframe-bar{
     display:flex!important;flex-direction:column;justify-content:flex-end;
@@ -213,12 +242,22 @@ body{
 
 <div id="btn-bar">
   <button class="item-btn" data-target="mm">Mac Mini</button>
-  <button class="item-btn" data-target="pc">Computer</button>
+  <button class="item-btn" data-target="pc" disabled style="opacity:0.4;cursor:not-allowed;flex-direction:column;gap:4px;">
+    <span style="font-size:14px;font-weight:600;">Computer</span>
+    <span style="font-size:10px;font-weight:400;color:#666;">Unavailable on mobile</span>
+  </button>
   <button class="item-btn" data-target="pf">Picture Frame</button>
   <button class="item-btn" data-target="kn">Keanu</button>
   <button class="item-btn" data-target="bk">Books</button>
   <button class="item-btn" data-target="ph">Phone</button>
 </div>
+
+<div id="phone-overlay">
+  <iframe src="" id="phone-iframe" allow="fullscreen"></iframe>
+  <button class="back-btn" id="phone-back-btn">← Back</button>
+</div>
+
+<button id="confirm-btn">Peek inside →</button>
 
 <div id="video-overlay">
   <video id="mm-fwd" src="https://raw.githubusercontent.com/timothyphilemon/Assets/95b7f0f57e14a29fcb46b65ce23dc4bdff7b8c3d/Macmini_transition2.mp4"              preload="auto" playsinline muted style="display:none"></video>
@@ -385,29 +424,7 @@ if(!isMobile){
   });
 }
 
-/* ── mobile hold hints ── */
-if(isMobile){
-  document.querySelectorAll('.item-btn').forEach(function(btn){
-    var holdTimer=null;
-    btn.addEventListener('touchstart',function(){
-      holdTimer=setTimeout(function(){
-        var isKeanu=btn.dataset.target==='kn';
-        mobileHintSuffix.style.display=isKeanu?'none':'';
-        makeWavy(MOBILE_NAMES[btn.dataset.target]||'this',mobileHintItem);
-      },300);
-    },{passive:true});
-    btn.addEventListener('touchend',function(){
-      clearTimeout(holdTimer);
-      mobileHintSuffix.style.display='';
-      resetSpan(mobileHintItem,'the items');
-    });
-    btn.addEventListener('touchcancel',function(){
-      clearTimeout(holdTimer);
-      mobileHintSuffix.style.display='';
-      resetSpan(mobileHintItem,'the items');
-    });
-  });
-}
+
 
 /* ── position mode (desktop dev tool) ── */
 var positionMode=false,activeObj=null,objDrag=false,objResize=false;
@@ -515,13 +532,32 @@ if(isMobile){
   document.querySelectorAll('.item-btn').forEach(function(btn){
     btn.addEventListener('click',function(){
       var t=btn.dataset.target;
-      if(t==='ph'){location.href='https://timothyphilemon.com';return;}
+      if(t==='ph'){
+        var fwd=document.getElementById('ph-fwd');
+        showOnly(fwd);fwd.currentTime=0;fwd.playbackRate=2;
+        overlay.classList.remove('fading');overlay.classList.add('open');
+        fwd.onended=function(){
+          overlay.classList.remove('open');
+          fwd.style.display='none';
+          document.getElementById('phone-iframe').src='https://timothyphilemon.com';
+          document.getElementById('phone-overlay').style.display='flex';
+        };
+        fwd.play().catch(function(){
+          document.getElementById('phone-iframe').src='https://timothyphilemon.com';
+          document.getElementById('phone-overlay').style.display='flex';
+        });
+        return;
+      }
       if(t==='kn'){playKeanuFwd();return;}
       var fwd=document.getElementById(t+'-fwd'),ef=document.getElementById(t+'-endframe');
       if(fwd&&ef)playFwd(fwd,ef);
     });
   });
-  document.getElementById('mm-back-btn').addEventListener('click',function(){playRev(document.getElementById('mm-rev'),document.getElementById('mm-endframe'));});
+  document.getElementById('phone-back-btn').addEventListener('click',function(){
+    var po=document.getElementById('phone-overlay');
+    po.style.display='none';
+    document.getElementById('phone-iframe').src='';
+  });
   document.getElementById('pc-back-btn').addEventListener('click',function(){playRev(document.getElementById('pc-rev'),document.getElementById('pc-endframe'));});
   document.getElementById('pf-back-btn').addEventListener('click',function(){playRev(document.getElementById('pf-rev'),document.getElementById('pf-endframe'));});
   document.getElementById('kn-back-btn').addEventListener('click',playKeanuRev);
