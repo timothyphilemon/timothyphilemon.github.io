@@ -45,6 +45,11 @@ body {
   transform: translateX(-50%) translateY(-10px);
 }
 
+/* Hide hint bubble on mobile */
+@media (max-width: 768px) {
+  #hint-bubble { display: none !important; }
+}
+
 /* ══════════════════════════════════════════
    DESKTOP
 ══════════════════════════════════════════ */
@@ -460,19 +465,13 @@ body {
 
 <script>
 // ══════════════════════════════
-// HINT BUBBLE
+// HINT BUBBLE — desktop only
 // ══════════════════════════════
 (function() {
+  if (window.innerWidth <= 768) return;
   var bubble = document.getElementById('hint-bubble');
-  // Slide in after 800ms
-  setTimeout(function() {
-    bubble.classList.add('show');
-  }, 800);
-  // Slide out after 10s
-  setTimeout(function() {
-    bubble.classList.remove('show');
-    bubble.classList.add('hide');
-  }, 10000);
+  setTimeout(function() { bubble.classList.add('show'); }, 800);
+  setTimeout(function() { bubble.classList.remove('show'); bubble.classList.add('hide'); }, 10000);
 })();
 
 // ══════════════════════════════
