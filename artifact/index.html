@@ -2,110 +2,177 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Room Test</title>
 <style>
-* { margin:0; padding:0; box-sizing:border-box; }
-body {
-  background:#ffffff; width:100vw; height:100vh;
-  overflow:hidden; display:flex; align-items:center; justify-content:center;
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:#ffffff;width:100vw;height:100vh;
+  overflow:hidden;display:flex;align-items:center;justify-content:center;
   font-family:-apple-system,sans-serif;
 }
-#scene-wrap { position:relative; width:100vw; height:100vh; }
-#room-bg {
-  width:100%; height:100%; object-fit:contain; display:block;
-  transform:scale(0.7) translateY(10%); transform-origin:center center;
+#scene-wrap{position:relative;width:100vw;height:100vh;}
+#room-bg{
+  width:100%;height:100%;object-fit:contain;display:block;
+  transform:scale(0.7) translateY(10%);transform-origin:center center;
 }
-#fade-bottom {
-  position:absolute; bottom:0; left:0; right:0; height:40%;
+#fade-bottom{
+  position:absolute;bottom:0;left:0;right:0;height:40%;
   background:linear-gradient(to top,#ffffff 0%,transparent 100%);
-  pointer-events:none; z-index:10;
+  pointer-events:none;z-index:10;
 }
-.obj { position:absolute; cursor:pointer; z-index:20; }
-.obj img { width:100%; height:100%; object-fit:contain; display:block; pointer-events:none; transition:filter .3s ease; }
-.obj:hover img { filter:brightness(1.15) saturate(1.3) contrast(1.05); }
-.obj:hover .tooltip { opacity:1; transform:translateX(-50%) translateY(0); }
-.tooltip {
-  position:absolute; bottom:-30px; left:50%;
+.obj{position:absolute;cursor:pointer;z-index:20;}
+.obj img{width:100%;height:100%;object-fit:contain;display:block;pointer-events:none;transition:filter .3s ease;}
+.obj:hover img{filter:brightness(1.15) saturate(1.3) contrast(1.05);}
+.obj:hover .tooltip{opacity:1;transform:translateX(-50%) translateY(0);}
+.tooltip{
+  position:absolute;bottom:-30px;left:50%;
   transform:translateX(-50%) translateY(4px);
-  background:rgba(0,0,0,0.72); color:white;
-  font-size:10px; font-weight:500; padding:4px 10px; border-radius:20px;
-  white-space:nowrap; opacity:0; transition:opacity .2s .25s,transform .2s .25s; pointer-events:none;
+  background:rgba(0,0,0,0.72);color:white;
+  font-size:10px;font-weight:500;padding:4px 10px;border-radius:20px;
+  white-space:nowrap;opacity:0;transition:opacity .2s .25s,transform .2s .25s;pointer-events:none;
 }
-.resize-handle {
-  position:absolute; bottom:-6px; right:-6px; width:16px; height:16px;
-  background:white; border:2px solid #e00; border-radius:4px;
-  cursor:se-resize; z-index:30; display:none;
+.resize-handle{
+  position:absolute;bottom:-6px;right:-6px;width:16px;height:16px;
+  background:white;border:2px solid #e00;border-radius:4px;
+  cursor:se-resize;z-index:30;display:none;
 }
-#desk-text {
-  position:absolute; pointer-events:none; width:390.1%; left:-100.82%; top:-50%;
-  display:flex; flex-direction:column; align-items:center; gap:8px; z-index:19;
+#desk-text{
+  position:absolute;pointer-events:none;width:390.1%;left:-100.82%;top:-50%;
+  display:flex;flex-direction:column;align-items:center;gap:8px;z-index:19;
 }
-#desk-welcome,#desk-hint {
-  font-size:27.2px; font-weight:500; color:rgba(0,0,0,0.35);
-  letter-spacing:0.03em; white-space:nowrap;
+#desk-welcome,#desk-hint{
+  font-size:27.2px;font-weight:500;color:rgba(0,0,0,0.35);
+  letter-spacing:0.03em;white-space:nowrap;
 }
 @keyframes rc{0%{color:#ff3333}16%{color:#ff9900}33%{color:#ddcc00}50%{color:#22bb44}66%{color:#2277ff}83%{color:#aa22ff}100%{color:#ff3333}}
 @keyframes wv{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 
-#video-overlay {
-  position:fixed; inset:0; z-index:200; background:transparent;
-  display:none; opacity:1; transition:opacity 0.3s ease;
+#video-overlay{
+  position:fixed;inset:0;z-index:200;background:transparent;
+  display:none;opacity:1;transition:opacity 0.3s ease;
 }
-#video-overlay.open { display:flex; opacity:1; }
-#video-overlay.fading { opacity:0; }
-#video-overlay video { width:100%; height:100%; object-fit:cover; }
+#video-overlay.open{display:flex;opacity:1;}
+#video-overlay.fading{opacity:0;}
+#video-overlay video{width:100%;height:100%;object-fit:cover;}
 
-.endframe {
-  position:fixed; inset:0; z-index:300; opacity:0; pointer-events:none;
-  display:none; align-items:center; justify-content:center; transition:opacity 0.2s ease;
+.endframe{
+  position:fixed;inset:0;z-index:300;opacity:0;pointer-events:none;
+  display:none;align-items:center;justify-content:center;transition:opacity 0.2s ease;
 }
-.endframe.open { opacity:1; pointer-events:all; }
-.endframe-img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
-.endframe-bar {
-  position:absolute; inset:0; opacity:0;
-  transition:opacity .4s .2s ease; pointer-events:none;
+.endframe.open{opacity:1;pointer-events:all;}
+.endframe-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+.endframe-bar{
+  position:absolute;inset:0;opacity:0;
+  transition:opacity .4s .2s ease;pointer-events:none;
 }
-.endframe.open .endframe-bar { opacity:1; }
-
-.bubble {
+.endframe.open .endframe-bar{opacity:1;}
+.bubble{
   font-size:1.2vw;
-  background:rgba(120,120,120,0.5); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
-  border-radius:18px; padding:1.2em 1.5em;
-  pointer-events:all; position:absolute; user-select:none;
+  background:rgba(120,120,120,0.5);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  border-radius:18px;padding:1.2em 1.5em;
+  pointer-events:all;position:absolute;user-select:none;
 }
-.endframe-title { font-size:1.2em; font-weight:700; color:white; }
-.endframe-desc  { font-size:0.87em; color:rgba(255,255,255,0.9); line-height:1.6; }
-.endframe-contacts { margin-top:10px; display:flex; flex-direction:column; gap:5px; }
-.endframe-contact-row { font-size:0.8em; color:rgba(255,255,255,0.9); display:flex; gap:8px; }
-.endframe-contact-row span:first-child { font-weight:700; color:white; min-width:70px; }
+.endframe-title{font-size:1.2em;font-weight:700;color:white;}
+.endframe-desc{font-size:0.87em;color:rgba(255,255,255,0.9);line-height:1.6;}
+.endframe-contacts{margin-top:10px;display:flex;flex-direction:column;gap:5px;}
+.endframe-contact-row{font-size:0.8em;color:rgba(255,255,255,0.9);display:flex;gap:8px;}
+.endframe-contact-row span:first-child{font-weight:700;color:white;min-width:70px;}
+.back-btn{
+  position:absolute;top:24px;left:24px;display:flex;align-items:center;gap:6px;
+  background:#000;color:white;border:none;padding:8px 16px;border-radius:30px;
+  font-size:13px;font-weight:500;cursor:pointer;opacity:0;pointer-events:none;
+  transition:opacity .3s .3s,background .2s;z-index:10;
+}
+.endframe.open .back-btn{opacity:1;pointer-events:all;}
+.back-btn:hover{background:#333;}
+#pc-endframe iframe{width:100%;height:100%;border:none;display:block;min-width:1024px;}
 
-.back-btn {
-  position:absolute; top:24px; left:24px; display:flex; align-items:center; gap:6px;
-  background:#000; color:white; border:none; padding:8px 16px; border-radius:30px;
-  font-size:13px; font-weight:500; cursor:pointer; opacity:0; pointer-events:none;
-  transition:opacity .3s .3s,background .2s; z-index:10;
+#pos-indicator{
+  position:fixed;top:20px;left:50%;transform:translateX(-50%);
+  background:#e00;color:white;font-size:12px;font-weight:700;
+  padding:6px 16px;border-radius:20px;z-index:999;pointer-events:none;display:none;
 }
-.endframe.open .back-btn { opacity:1; pointer-events:all; }
-.back-btn:hover { background:#333; }
-#pc-endframe iframe { width:100%; height:100%; border:none; display:block; min-width:1024px; }
-#pos-indicator {
-  position:fixed; top:20px; left:50%; transform:translateX(-50%);
-  background:#e00; color:white; font-size:12px; font-weight:700;
-  padding:6px 16px; border-radius:20px; z-index:999; pointer-events:none; display:none;
-}
-#coords {
-  position:fixed; bottom:20px; left:50%; transform:translateX(-50%);
-  background:rgba(0,0,0,0.8); color:#fff; font-size:11px; font-weight:600;
-  padding:6px 16px; border-radius:20px; z-index:999; pointer-events:none; display:none; white-space:nowrap;
+#coords{
+  position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+  background:rgba(0,0,0,0.8);color:#fff;font-size:11px;font-weight:600;
+  padding:6px 16px;border-radius:20px;z-index:999;pointer-events:none;display:none;white-space:nowrap;
 }
 
+/* ── MOBILE ONLY ── */
+#mobile-text{display:none;}
+#btn-bar{display:none;}
+
+@media (pointer:coarse){
+  #room-bg{transform:scale(1) translateY(0);}
+  #fade-bottom{height:25%;}
+  .obj{display:none;}
+
+  body{flex-direction:column;justify-content:center;}
+  #scene-wrap{height:44vw;flex-shrink:0;}
+
+  #mobile-text{
+    display:block;width:100%;
+    padding:0 20px 8px;
+    text-align:center;flex-shrink:0;
+  }
+  #mobile-welcome{
+    font-size:15px;font-weight:600;color:rgba(0,0,0,0.75);
+    letter-spacing:0.01em;margin-bottom:2px;
+  }
+  #mobile-hint{
+    font-size:12px;font-weight:400;color:rgba(0,0,0,0.4);
+    letter-spacing:0.01em;
+  }
+
+  #btn-bar{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    width:100%;padding:10px 14px calc(env(safe-area-inset-bottom,0px) + 10px);
+    background:#fff;flex-shrink:0;
+  }
+  .item-btn{
+    background:#f0f0f0;border:none;border-radius:16px;
+    padding:18px 10px;font-size:14px;font-weight:600;color:#111;
+    cursor:pointer;transition:background .15s,transform .1s;
+    -webkit-tap-highlight-color:transparent;touch-action:manipulation;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .item-btn:active{background:#ddd;transform:scale(0.97);}
+
+  .endframe-bar{
+    display:flex!important;flex-direction:column;justify-content:flex-end;
+    padding:16px 16px calc(env(safe-area-inset-bottom,0px) + 20px);
+    background:linear-gradient(to top,rgba(0,0,0,0.82) 0%,rgba(0,0,0,0.45) 55%,transparent 100%);
+    pointer-events:all;
+  }
+  .bubble{
+    position:static!important;left:auto!important;top:auto!important;
+    width:auto!important;height:auto!important;font-size:14px!important;
+    border-radius:14px;padding:14px 16px;
+    background:rgba(0,0,0,0.35);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    margin-bottom:8px;
+  }
+  .bubble:last-child{margin-bottom:0;}
+  .back-btn{
+    top:env(safe-area-inset-top,16px);left:16px;
+    padding:12px 22px;font-size:15px;min-height:44px;
+    -webkit-tap-highlight-color:transparent;touch-action:manipulation;
+  }
+  #pc-endframe iframe{display:none!important;}
+}
 </style>
 </head>
 <body>
 
 <div id="pos-indicator">⚙ POSITION MODE — press 0 to exit</div>
 <div id="coords"></div>
+
+<div id="mobile-text">
+  <div id="mobile-welcome">Welcome to Tim's Desktop.</div>
+  <div id="mobile-hint">Interact with <span id="mobile-hint-item">the items</span><span id="mobile-hint-suffix"> on my desk to peek inside my world.</span></div>
+</div>
 
 <div id="scene-wrap">
   <img id="room-bg" src="https://raw.githubusercontent.com/timothyphilemon/Assets/45c5418040f5e827da082ab88f78bf66b9ff0f66/BaseHD5.jpg" alt="room"/>
@@ -144,27 +211,36 @@ body {
   </div>
 </div>
 
-<div id="video-overlay">
-  <video id="mm-fwd" src="https://raw.githubusercontent.com/timothyphilemon/Assets/95b7f0f57e14a29fcb46b65ce23dc4bdff7b8c3d/Macmini_transition2.mp4"             preload="auto" playsinline muted style="display:none"></video>
-  <video id="mm-rev" src="https://raw.githubusercontent.com/timothyphilemon/Assets/32eaa1a37efdc8651be3332b4b37fea216a35f32/Macmini_transitionReversed.mp4"      preload="auto" playsinline muted style="display:none"></video>
-  <video id="pc-fwd" src="https://raw.githubusercontent.com/timothyphilemon/Assets/e519611308b041b7e539f018a65ac84077931e25/Computertransition4.mp4"             preload="auto" playsinline muted style="display:none"></video>
-  <video id="pc-rev" src="https://raw.githubusercontent.com/timothyphilemon/Assets/3e2ac32023da1fc3bf844b773cfa000a9406cfb7/Computertransition3reversed.mp4"    preload="auto" playsinline muted style="display:none"></video>
-  <video id="pf-fwd" src="https://raw.githubusercontent.com/timothyphilemon/Assets/b96c92c036b62dea31715e5bbd4573db063df093/pictureframetransition3.mp4"         preload="auto" playsinline muted style="display:none"></video>
-  <video id="pf-rev" src="https://raw.githubusercontent.com/timothyphilemon/Assets/4a1c33b7bdd4a3ac70b2632d63e007c7f9c22d46/pictureframetransition%20reversed.mp4" preload="auto" playsinline muted style="display:none"></video>
-  <video id="ph-fwd" src="https://raw.githubusercontent.com/timothyphilemon/Assets/8a6df5941912ffc4c3657527b432fa88a3d1cd2f/phonetransition.mp4"                  preload="auto" playsinline muted style="display:none"></video>
-  <video id="ph-rev" src="https://raw.githubusercontent.com/timothyphilemon/Assets/8a6df5941912ffc4c3657527b432fa88a3d1cd2f/phonetransitionreversed.mp4"          preload="auto" playsinline muted style="display:none"></video>
-  <video id="kn-fwd" src="https://raw.githubusercontent.com/timothyphilemon/Assets/0dc1ce9d5e14016edd4bbd9163a422946a32053e/keanutransition3.mp4"                 preload="auto" playsinline muted style="display:none"></video>
-  <video id="kn-rev" src="https://raw.githubusercontent.com/timothyphilemon/Assets/952676fb7e93a8bd1931ee9f794c003546606d0f/keanutransitionreversed3.mp4"         preload="auto" playsinline muted style="display:none"></video>
-  <video id="bk-fwd" src="https://raw.githubusercontent.com/timothyphilemon/Assets/388427b4ffbc8e77bf22a6545860c7fdcfae2d63/bookstransition.mp4"                  preload="auto" playsinline muted style="display:none"></video>
-  <video id="bk-rev" src="https://raw.githubusercontent.com/timothyphilemon/Assets/388427b4ffbc8e77bf22a6545860c7fdcfae2d63/bookstransitionreversed.mp4"          preload="auto" playsinline muted style="display:none"></video>
+<div id="btn-bar">
+  <button class="item-btn" data-target="mm">Mac Mini</button>
+  <button class="item-btn" data-target="pc">Computer</button>
+  <button class="item-btn" data-target="pf">Picture Frame</button>
+  <button class="item-btn" data-target="kn">Keanu</button>
+  <button class="item-btn" data-target="bk">Books</button>
+  <button class="item-btn" data-target="ph">Phone</button>
 </div>
 
-<!-- endframes -->
+<div id="video-overlay">
+  <video id="mm-fwd" src="https://raw.githubusercontent.com/timothyphilemon/Assets/95b7f0f57e14a29fcb46b65ce23dc4bdff7b8c3d/Macmini_transition2.mp4"              preload="auto" playsinline muted style="display:none"></video>
+  <video id="mm-rev" src="https://raw.githubusercontent.com/timothyphilemon/Assets/32eaa1a37efdc8651be3332b4b37fea216a35f32/Macmini_transitionReversed.mp4"       preload="auto" playsinline muted style="display:none"></video>
+  <video id="pc-fwd" src="https://raw.githubusercontent.com/timothyphilemon/Assets/e519611308b041b7e539f018a65ac84077931e25/Computertransition4.mp4"              preload="auto" playsinline muted style="display:none"></video>
+  <video id="pc-rev" src="https://raw.githubusercontent.com/timothyphilemon/Assets/3e2ac32023da1fc3bf844b773cfa000a9406cfb7/Computertransition3reversed.mp4"     preload="auto" playsinline muted style="display:none"></video>
+  <video id="pf-fwd" src="https://raw.githubusercontent.com/timothyphilemon/Assets/b96c92c036b62dea31715e5bbd4573db063df093/pictureframetransition3.mp4"          preload="auto" playsinline muted style="display:none"></video>
+  <video id="pf-rev" src="https://raw.githubusercontent.com/timothyphilemon/Assets/4a1c33b7bdd4a3ac70b2632d63e007c7f9c22d46/pictureframetransition%20reversed.mp4" preload="auto" playsinline muted style="display:none"></video>
+  <video id="ph-fwd" src="https://raw.githubusercontent.com/timothyphilemon/Assets/8a6df5941912ffc4c3657527b432fa88a3d1cd2f/phonetransition.mp4"                   preload="auto" playsinline muted style="display:none"></video>
+  <video id="ph-rev" src="https://raw.githubusercontent.com/timothyphilemon/Assets/8a6df5941912ffc4c3657527b432fa88a3d1cd2f/phonetransitionreversed.mp4"           preload="auto" playsinline muted style="display:none"></video>
+  <video id="kn-fwd" src="https://raw.githubusercontent.com/timothyphilemon/Assets/0dc1ce9d5e14016edd4bbd9163a422946a32053e/keanutransition3.mp4"                  preload="auto" playsinline muted style="display:none"></video>
+  <video id="kn-rev" src="https://raw.githubusercontent.com/timothyphilemon/Assets/952676fb7e93a8bd1931ee9f794c003546606d0f/keanutransitionreversed3.mp4"          preload="auto" playsinline muted style="display:none"></video>
+  <video id="bk-fwd" src="https://raw.githubusercontent.com/timothyphilemon/Assets/388427b4ffbc8e77bf22a6545860c7fdcfae2d63/bookstransition.mp4"                   preload="auto" playsinline muted style="display:none"></video>
+  <video id="bk-rev" src="https://raw.githubusercontent.com/timothyphilemon/Assets/388427b4ffbc8e77bf22a6545860c7fdcfae2d63/bookstransitionreversed.mp4"           preload="auto" playsinline muted style="display:none"></video>
+</div>
+
+<!-- endframes (phone endframe intentionally omitted — mobile goes to site directly) -->
 <div class="endframe" id="mm-endframe">
   <img class="endframe-img" src="https://raw.githubusercontent.com/timothyphilemon/Assets/adb9fa9fc29c2f2169b060a7dcaefd3b46fef670/Macmini3.png" alt="Mac Mini"/>
   <div class="endframe-bar">
-    <div class="bubble" id="mm-title" style="left:11.6402vw;top:27.4807vh;width:26.857974vw;height:11.73598vh;font-size:1.823vw"><div class="endframe-title">Mac Mini</div><div class="bubble-resize"></div></div>
-    <div class="bubble" id="mm-desc"  style="left:58.208vw;top:53.785vh;width:39.689vw;height:25.764vh;font-size:1.5426vw"><div class="endframe-desc">The machine that never sleeps and a goated piece of hardware. It runs automated scrapers and agents quietly in the background, surfacing valuable data and servicing thousands of users across the US for my startup. Small box. Big output.</div><div class="bubble-resize"></div></div>
+    <div class="bubble" style="left:11.6402vw;top:27.4807vh;width:26.857974vw;height:11.73598vh;font-size:1.823vw"><div class="endframe-title">Mac Mini</div></div>
+    <div class="bubble" style="left:58.208vw;top:53.785vh;width:39.689vw;height:25.764vh;font-size:1.5426vw"><div class="endframe-desc">The machine that never sleeps and a goated piece of hardware. It runs automated scrapers and agents quietly in the background, surfacing valuable data and servicing thousands of users across the US for my startup. Small box. Big output.</div></div>
   </div>
   <button class="back-btn" id="mm-back-btn">← Back</button>
 </div>
@@ -177,8 +253,8 @@ body {
 <div class="endframe" id="pf-endframe">
   <img class="endframe-img" src="https://raw.githubusercontent.com/timothyphilemon/Assets/952d8c86c815cfc242df8e9a360707e537dfa8b7/pictureframeend2.png" alt="Picture Frame"/>
   <div class="endframe-bar">
-    <div class="bubble" id="pf-title" style="left:15.4267vw;top:33.5903vh;width:26.736827vw;height:11.167654vh;font-size:1.6828vw"><div class="endframe-title">Google I/O, 2024</div><div class="bubble-resize"></div></div>
-    <div class="bubble" id="pf-desc"  style="left:63.6737vw;top:49.2665vh;width:33.260642vw;height:28.072004vh;font-size:1.5426vw"><div class="endframe-desc">The energy in the room is full of people who think creatively and build fearlessly, exactly the kind of environment I want to work in. I showed up as an attendee, but now I'm applying to come back as a fellow and contribute more to the Google team!</div><div class="bubble-resize"></div></div>
+    <div class="bubble" style="left:15.4267vw;top:33.5903vh;width:26.736827vw;height:11.167654vh;font-size:1.6828vw"><div class="endframe-title">Google I/O, 2024</div></div>
+    <div class="bubble" style="left:63.6737vw;top:49.2665vh;width:33.260642vw;height:28.072004vh;font-size:1.5426vw"><div class="endframe-desc">The energy in the room is full of people who think creatively and build fearlessly, exactly the kind of environment I want to work in. I showed up as an attendee, but now I'm applying to come back as a fellow and contribute more to the Google team!</div></div>
   </div>
   <button class="back-btn" id="pf-back-btn">← Back</button>
 </div>
@@ -186,8 +262,8 @@ body {
 <div class="endframe" id="ph-endframe">
   <img class="endframe-img" src="https://raw.githubusercontent.com/timothyphilemon/Assets/8a6df5941912ffc4c3657527b432fa88a3d1cd2f/phoneendframe.jpg" alt="Phone"/>
   <div class="endframe-bar">
-    <div class="bubble" id="ph-title" style="left:17.8077vw;top:21.7714vh;width:21.719307vw;height:11.4875vh;font-size:1.823vw"><div class="endframe-title">Let's Talk</div><div class="bubble-resize"></div></div>
-    <div class="bubble" id="ph-desc"  style="left:57.945vw;top:46.4vh;width:32.551vw;height:29.353vh;font-size:1.3486vw">
+    <div class="bubble" style="left:17.8077vw;top:21.7714vh;width:21.719307vw;height:11.4875vh;font-size:1.823vw"><div class="endframe-title">Let's Talk</div></div>
+    <div class="bubble" style="left:57.945vw;top:46.4vh;width:32.551vw;height:29.353vh;font-size:1.3486vw">
       <div class="endframe-desc">Whether it's a wild idea, a collaboration, or just a hello — I'm always open to a good conversation.</div>
       <div class="endframe-contacts">
         <div class="endframe-contact-row"><span>Email</span><span><a href="mailto:philemon_timothy@icloud.com" style="color:inherit;text-decoration:underline;">philemon_timothy@icloud.com</a></span></div>
@@ -195,7 +271,6 @@ body {
         <div class="endframe-contact-row"><span>X</span><span><a href="https://x.com/timothyphilemon" target="_blank" style="color:inherit;text-decoration:underline;">@timothyphilemon</a></span></div>
         <div class="endframe-contact-row"><span>Instagram</span><span><a href="https://instagram.com/timstafeed" target="_blank" style="color:inherit;text-decoration:underline;">@timstafeed</a></span></div>
       </div>
-      <div class="bubble-resize"></div>
     </div>
   </div>
   <button class="back-btn" id="ph-back-btn">← Back</button>
@@ -204,8 +279,8 @@ body {
 <div class="endframe" id="kn-endframe">
   <img class="endframe-img" src="https://raw.githubusercontent.com/timothyphilemon/Assets/d237e8b25b10db66e47be3122cbef6953ff0eb3c/kanuendframe.jpg" alt="Keanu"/>
   <div class="endframe-bar">
-    <div class="bubble" id="kn-title" style="left:21.2402vw;top:15.9265vh;width:18.475823vw;height:13.866934vh;font-size:2.1034vw"><div class="endframe-title">Keanu</div><div class="bubble-resize"></div></div>
-    <div class="bubble" id="kn-desc"  style="left:66.125vw;top:34.118vh;width:30.731vw;height:25.764vh;font-size:1.5426vw"><div class="endframe-desc">My Shiba Inu. He has no idea what I'm working on, but he never leaves the room while I'm building it. Moral support, good company, and the occasional zoomie. Every good project needs a Keanu.</div><div class="bubble-resize"></div></div>
+    <div class="bubble" style="left:21.2402vw;top:15.9265vh;width:18.475823vw;height:13.866934vh;font-size:2.1034vw"><div class="endframe-title">Keanu</div></div>
+    <div class="bubble" style="left:66.125vw;top:34.118vh;width:30.731vw;height:25.764vh;font-size:1.5426vw"><div class="endframe-desc">My Shiba Inu. He has no idea what I'm working on, but he never leaves the room while I'm building it. Moral support, good company, and the occasional zoomie. Every good project needs a Keanu.</div></div>
   </div>
   <button class="back-btn" id="kn-back-btn">← Back</button>
 </div>
@@ -213,16 +288,17 @@ body {
 <div class="endframe" id="bk-endframe">
   <img class="endframe-img" src="https://raw.githubusercontent.com/timothyphilemon/Assets/388427b4ffbc8e77bf22a6545860c7fdcfae2d63/Booksendframe.jpg" alt="Books"/>
   <div class="endframe-bar">
-    <div class="bubble" id="bk-title" style="left:13.3917vw;top:30.9324vh;width:28.167611vw;height:10.553154vh;font-size:1.4725vw"><div class="endframe-title">The Singularity Is Nearer</div><div class="bubble-resize"></div></div>
-    <div class="bubble" id="bk-desc"  style="left:64.791vw;top:55.364vh;width:32.394vw;height:30.806vh;font-size:1.4725vw"><div class="endframe-desc">A book I'd totally recommend for anyone building at the intersection of technology and creativity. AI surpassing human intelligence, biology merging with technology, and a world that looks nothing like today. The future isn't something that happens to us. It's something we make.</div><div class="bubble-resize"></div></div>
+    <div class="bubble" style="left:13.3917vw;top:30.9324vh;width:28.167611vw;height:10.553154vh;font-size:1.4725vw"><div class="endframe-title">The Singularity Is Nearer</div></div>
+    <div class="bubble" style="left:64.791vw;top:55.364vh;width:32.394vw;height:30.806vh;font-size:1.4725vw"><div class="endframe-desc">A book I'd totally recommend for anyone building at the intersection of technology and creativity. AI surpassing human intelligence, biology merging with technology, and a world that looks nothing like today. The future isn't something that happens to us. It's something we make.</div></div>
   </div>
   <button class="back-btn" id="bk-back-btn">← Back</button>
 </div>
 
-
-
 <script>
-/* ── object layout ─────────────────────────────────── */
+/* ── detect mobile ── */
+var isMobile = window.matchMedia('(pointer:coarse)').matches;
+
+/* ── desktop layout ── */
 var OBJECTS={
   'obj-macmini':      {x:0.1403,y:0.3695,w:0.2827,h:0.1822},
   'obj-pictureframe': {x:0.5638,y:0.1108,w:0.1348,h:0.3043},
@@ -237,14 +313,23 @@ var ITEM_NAMES={
   'obj-pictureframe':'the picture frame','obj-phone':'the phone',
   'obj-keanu':'keanu','obj-books':'the books','obj-resume':'the resume'
 };
+var MOBILE_NAMES={
+  'mm':'the mac mini','pc':'the computer','pf':'the picture frame',
+  'ph':'the phone','kn':'keanu','bk':'the books'
+};
+
 var roomImg=document.getElementById('room-bg');
 var overlay=document.getElementById('video-overlay');
 var hintItem=document.getElementById('hint-item');
-var hintSuffix = document.getElementById('hint-suffix');
+var hintSuffix=document.getElementById('hint-suffix');
+var mobileHintItem=document.getElementById('mobile-hint-item');
+var mobileHintSuffix=document.getElementById('mobile-hint-suffix');
 var coordsEl=document.getElementById('coords');
+var posInd=document.getElementById('pos-indicator');
 var allVideos=Array.from(document.querySelectorAll('#video-overlay video'));
 var allEndframes=Array.from(document.querySelectorAll('.endframe'));
 
+/* ── positioning ── */
 function getRenderedRect(){
   var r=roomImg.getBoundingClientRect();
   var iA=roomImg.naturalWidth/roomImg.naturalHeight,eA=r.width/r.height,rW,rH,ox,oy;
@@ -265,34 +350,66 @@ roomImg.addEventListener('load',positionAll);
 if(roomImg.complete&&roomImg.naturalWidth)positionAll();
 window.addEventListener('resize',positionAll);
 
-/* ── wavy hint ─────────────────────────────────────── */
-function setWavy(text){
-  hintItem.innerHTML='';hintItem.style.display='inline-flex';
+/* ── wavy helpers ── */
+function makeWavy(text,container){
+  container.innerHTML='';container.style.display='inline-flex';
   text.split('').forEach(function(ch,i){
     var s=document.createElement('span'),d=i*0.08;
     s.style.cssText=['display:inline-block','font-weight:700',
       ch===' '?'width:0.3em':'',
       'animation:rc 5s linear -'+(5-d)+'s infinite,wv 1.2s ease-in-out '+d+'s infinite'
     ].filter(Boolean).join(';');
-    s.textContent=ch===' '?'\u00a0':ch;hintItem.appendChild(s);
+    s.textContent=ch===' '?'\u00a0':ch;
+    container.appendChild(s);
   });
 }
-function resetHint(){hintItem.innerHTML='';hintItem.style.display='';hintItem.textContent='the items';}
-document.querySelectorAll('.obj').forEach(function(obj){
-  obj.addEventListener('mouseenter',function(){
-    if(positionMode)return;
-    obj.style.zIndex='25';
-    setWavy(ITEM_NAMES[obj.id]||'this');
-    hintSuffix.style.display = obj.id==='obj-keanu' ? 'none' : '';
-  });
-  obj.addEventListener('mouseleave',function(){
-    obj.style.zIndex='20';
-    resetHint();
-    hintSuffix.style.display='';
-  });
-});
+function resetSpan(container,text){
+  container.style.display='';container.style.animation='';
+  container.innerHTML='';container.textContent=text;
+}
 
-/* ── scene position mode ───────────────────────────── */
+/* ── desktop hover hints ── */
+if(!isMobile){
+  document.querySelectorAll('.obj').forEach(function(obj){
+    obj.addEventListener('mouseenter',function(){
+      if(positionMode)return;
+      obj.style.zIndex='25';
+      makeWavy(ITEM_NAMES[obj.id]||'this',hintItem);
+      hintSuffix.style.display=obj.id==='obj-keanu'?'none':'';
+    });
+    obj.addEventListener('mouseleave',function(){
+      obj.style.zIndex='20';
+      resetSpan(hintItem,'the items');
+      hintSuffix.style.display='';
+    });
+  });
+}
+
+/* ── mobile hold hints ── */
+if(isMobile){
+  document.querySelectorAll('.item-btn').forEach(function(btn){
+    var holdTimer=null;
+    btn.addEventListener('touchstart',function(){
+      holdTimer=setTimeout(function(){
+        var isKeanu=btn.dataset.target==='kn';
+        mobileHintSuffix.style.display=isKeanu?'none':'';
+        makeWavy(MOBILE_NAMES[btn.dataset.target]||'this',mobileHintItem);
+      },300);
+    },{passive:true});
+    btn.addEventListener('touchend',function(){
+      clearTimeout(holdTimer);
+      mobileHintSuffix.style.display='';
+      resetSpan(mobileHintItem,'the items');
+    });
+    btn.addEventListener('touchcancel',function(){
+      clearTimeout(holdTimer);
+      mobileHintSuffix.style.display='';
+      resetSpan(mobileHintItem,'the items');
+    });
+  });
+}
+
+/* ── position mode (desktop dev tool) ── */
 var positionMode=false,activeObj=null,objDrag=false,objResize=false;
 var dSX,dSY,dSL,dST,rSX,rSY,rSW,rSH;
 function updateCoords(el){
@@ -337,48 +454,79 @@ document.addEventListener('mouseup',function(){
   objDrag=false;objResize=false;activeObj=null;
 });
 
-/* ── video helpers ─────────────────────────────────── */
+/* ── video helpers ── */
 function showOnly(vid){allVideos.forEach(function(v){v.style.display='none';v.pause();});vid.style.display='block';}
 function closeAll(){allEndframes.forEach(function(f){f.style.display='none';f.classList.remove('open');});overlay.classList.remove('open','fading');allVideos.forEach(function(v){v.pause();v.style.display='none';});}
 function preWarm(ef){ef.style.display='flex';ef.classList.remove('open');}
 function revealEndframe(ef){ef.style.display='flex';requestAnimationFrame(function(){ef.classList.add('open');});}
 function hideEndframe(ef){ef.classList.remove('open');ef.addEventListener('transitionend',function(){ef.style.display='none';},{once:true});}
-function playFwd(vid,ef){preWarm(ef);showOnly(vid);vid.currentTime=0;vid.playbackRate=2;overlay.classList.remove('fading');overlay.classList.add('open');vid.onended=function(){revealEndframe(ef);};vid.play();}
-function playRev(vid,ef){hideEndframe(ef);showOnly(vid);vid.currentTime=0;vid.playbackRate=2;overlay.classList.add('open');vid.onended=function(){overlay.classList.add('fading');setTimeout(function(){overlay.classList.remove('open','fading');vid.style.display='none';},300);};vid.play();}
-function prime(){allVideos.forEach(function(v){v.play().then(function(){v.pause();v.currentTime=0;}).catch(function(){});});document.removeEventListener('mousemove',prime);document.removeEventListener('touchstart',prime);}
-document.addEventListener('mousemove',prime);document.addEventListener('touchstart',prime);
+function playFwd(vid,ef){
+  preWarm(ef);showOnly(vid);vid.currentTime=0;vid.playbackRate=2;
+  overlay.classList.remove('fading');overlay.classList.add('open');
+  vid.onended=function(){revealEndframe(ef);};
+  vid.play().catch(function(){revealEndframe(ef);});
+}
+function playRev(vid,ef){
+  hideEndframe(ef);showOnly(vid);vid.currentTime=0;vid.playbackRate=2;overlay.classList.add('open');
+  vid.onended=function(){overlay.classList.add('fading');setTimeout(function(){overlay.classList.remove('open','fading');vid.style.display='none';},300);};
+  vid.play().catch(function(){overlay.classList.remove('open','fading');vid.style.display='none';});
+}
+function playKeanuFwd(){
+  var fwd=document.getElementById('kn-fwd'),ef=document.getElementById('kn-endframe'),D=300;
+  preWarm(ef);showOnly(fwd);fwd.currentTime=0;fwd.playbackRate=2;
+  overlay.style.transition='none';overlay.style.opacity='0';overlay.classList.remove('fading');overlay.classList.add('open');
+  requestAnimationFrame(function(){overlay.style.transition='opacity '+D+'ms ease';overlay.style.opacity='1';});
+  setTimeout(function(){fwd.play().catch(function(){revealEndframe(ef);});fwd.onended=function(){revealEndframe(ef);};},D);
+}
+function playKeanuRev(){
+  var rev=document.getElementById('kn-rev'),ef=document.getElementById('kn-endframe'),D=300;
+  showOnly(rev);rev.currentTime=0;rev.playbackRate=2;
+  overlay.style.transition='none';overlay.style.opacity='0';overlay.classList.add('open');hideEndframe(ef);
+  requestAnimationFrame(function(){overlay.style.transition='opacity '+D+'ms ease';overlay.style.opacity='1';});
+  setTimeout(function(){
+    rev.play().catch(function(){overlay.classList.remove('open','fading');overlay.style.transition='';overlay.style.opacity='';});
+    rev.onended=function(){overlay.style.transition='opacity '+D+'ms ease';overlay.style.opacity='0';setTimeout(function(){overlay.classList.remove('open','fading');overlay.style.transition='';overlay.style.opacity='';rev.style.display='none';},D);};
+  },D);
+}
 
-var items=[
+function prime(){allVideos.forEach(function(v){v.play().then(function(){v.pause();v.currentTime=0;}).catch(function(){});});document.removeEventListener('mousemove',prime);document.removeEventListener('touchstart',prime);}
+document.addEventListener('mousemove',prime);
+document.addEventListener('touchstart',prime,{passive:true});
+
+/* ── desktop: click objects ── */
+var desktopItems=[
   {obj:'obj-macmini',    fwd:'mm-fwd',rev:'mm-rev',ef:'mm-endframe'},
   {obj:'obj-computer',   fwd:'pc-fwd',rev:'pc-rev',ef:'pc-endframe'},
   {obj:'obj-pictureframe',fwd:'pf-fwd',rev:'pf-rev',ef:'pf-endframe'},
   {obj:'obj-phone',      fwd:'ph-fwd',rev:'ph-rev',ef:'ph-endframe'},
   {obj:'obj-books',      fwd:'bk-fwd',rev:'bk-rev',ef:'bk-endframe'}
 ];
-items.forEach(function(item){
+desktopItems.forEach(function(item){
   var fwd=document.getElementById(item.fwd),rev=document.getElementById(item.rev),ef=document.getElementById(item.ef);
   document.getElementById(item.obj).addEventListener('mousedown',function(e){if(positionMode)return;e.preventDefault();playFwd(fwd,ef);});
   ef.querySelector('.back-btn').addEventListener('mousedown',function(e){e.preventDefault();playRev(rev,ef);});
 });
-(function(){
-  var fwd=document.getElementById('kn-fwd'),rev=document.getElementById('kn-rev'),ef=document.getElementById('kn-endframe'),D=300;
-  document.getElementById('obj-keanu').addEventListener('mousedown',function(e){
-    if(positionMode)return;e.preventDefault();preWarm(ef);
-    showOnly(fwd);fwd.currentTime=0;fwd.playbackRate=2;
-    overlay.style.transition='none';overlay.style.opacity='0';overlay.classList.remove('fading');overlay.classList.add('open');
-    requestAnimationFrame(function(){overlay.style.transition='opacity '+D+'ms ease';overlay.style.opacity='1';});
-    setTimeout(function(){fwd.play();fwd.onended=function(){revealEndframe(ef);};},D);
-  });
-  document.getElementById('kn-back-btn').addEventListener('mousedown',function(e){
-    e.preventDefault();showOnly(rev);rev.currentTime=0;rev.playbackRate=2;
-    overlay.style.transition='none';overlay.style.opacity='0';overlay.classList.add('open');hideEndframe(ef);
-    requestAnimationFrame(function(){overlay.style.transition='opacity '+D+'ms ease';overlay.style.opacity='1';});
-    setTimeout(function(){rev.play();rev.onended=function(){overlay.style.transition='opacity '+D+'ms ease';overlay.style.opacity='0';setTimeout(function(){overlay.classList.remove('open','fading');overlay.style.transition='';overlay.style.opacity='';rev.style.display='none';},D);};},D);
-  });
-})();
+document.getElementById('obj-keanu').addEventListener('mousedown',function(e){if(positionMode)return;e.preventDefault();playKeanuFwd();});
+document.getElementById('kn-back-btn').addEventListener('mousedown',function(e){e.preventDefault();playKeanuRev();});
 document.getElementById('obj-resume').addEventListener('mousedown',function(e){if(positionMode)return;e.preventDefault();});
 
-
+/* ── mobile: button bar ── */
+if(isMobile){
+  document.querySelectorAll('.item-btn').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var t=btn.dataset.target;
+      if(t==='ph'){location.href='https://timothyphilemon.com';return;}
+      if(t==='kn'){playKeanuFwd();return;}
+      var fwd=document.getElementById(t+'-fwd'),ef=document.getElementById(t+'-endframe');
+      if(fwd&&ef)playFwd(fwd,ef);
+    });
+  });
+  document.getElementById('mm-back-btn').addEventListener('click',function(){playRev(document.getElementById('mm-rev'),document.getElementById('mm-endframe'));});
+  document.getElementById('pc-back-btn').addEventListener('click',function(){playRev(document.getElementById('pc-rev'),document.getElementById('pc-endframe'));});
+  document.getElementById('pf-back-btn').addEventListener('click',function(){playRev(document.getElementById('pf-rev'),document.getElementById('pf-endframe'));});
+  document.getElementById('kn-back-btn').addEventListener('click',playKeanuRev);
+  document.getElementById('bk-back-btn').addEventListener('click',function(){playRev(document.getElementById('bk-rev'),document.getElementById('bk-endframe'));});
+}
 </script>
 </body>
 </html>
